@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        },
+        "html":{
+            "format":"<html><body><p>%(asctime)s - %(name)s - %(levelname)s - %(message)s</p></body></html>"
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "INFO",
+            "formatter": "simple",
+            "stream": "ext://sys.stdout"
+        },
+        "sql": {
+            "class": "log_manager.custom_handlers.SQLServerHandler",
+            "level": "INFO",
+            "server": "scndbp1",
+            "driver": "{ODBC Driver 17 for SQL Server}",
+            "user": "SvcDataMover",
+            "password": "Abdala",
+            "database": "Process",
+            "table": "Logs"
+           
+        },
+        "email": {
+            "class": "log_manager.custom_handlers.CustomSMTPHandler",
+            "level": "ERROR",
+            "formatter": "html",
+            "mailhost": "10.21.3.40:25",
+            "fromaddr": "scndbp1.SQLAgent@Carenu.com",
+            "toaddrs": ["abdalad@carenu.com", "ITSupport@carenu.com"],
+            "subject": "Error Log", 
+            "secure": []
+        },
+
+        "queue_handler": {
+            "class":"logging.handlers.QueueHandler",
+            "handlers":["console","sql", "email"],
+            "respect_handler_level":true 
+        }
+    },
+    "loggers": {
+        "root": {
+            "handlers": ["queue_handler"], 
+            "level":"DEBUG",
+            "propagate": true
+        }
+    }
+}
+
+
+ 
