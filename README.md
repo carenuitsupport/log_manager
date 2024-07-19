@@ -1,0 +1,1 @@
+This is our customized logging library (that leverages python's built-in logging library) that logs entries in process.log table, sends emails when there is an error and print statements on the console.
